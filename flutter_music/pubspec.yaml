@@ -31,7 +31,7 @@ dependencies:
   # 屏幕适配
   flutter_screenutil: ^5.0.0
   # # toast
-  # fluttertoast: ^8.0.7
+  fluttertoast: ^8.0.7
   
 dev_dependencies:
   flutter_test:

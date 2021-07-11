@@ -88,12 +88,11 @@ class _SignInPageState extends State<SignInPage> {
 
   void _handleSignIn() {
     if (!duIsEmail(_emailController.value.text)) {
-      // toastInfo(msg: '请正确输入邮件');
-      // Fluttertoast.showToast(msg: "ddddd");
+      toastInfo(msg: '请正确输入邮件');
       return;
     }
     if (!duCheckStringLength(_passController.value.text, 6)) {
-      // toastInfo(msg: '密码不能小于6位');
+      toastInfo(msg: '密码不能小于6位');
       return;
     }
   }
