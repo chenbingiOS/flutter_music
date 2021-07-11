@@ -86,6 +86,7 @@ class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
 
+  // 跳转 注册界面
   void _handleSignIn() {
     if (!duIsEmail(_emailController.value.text)) {
       toastInfo(msg: '请正确输入邮件');
@@ -97,6 +98,7 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
+  // 执行登录操作
   void _handleNavSignUp() {
     Navigator.pushNamed(
       context,
@@ -172,12 +174,68 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  // 第三方登录
   Widget _buildThirdPartyLogin() {
-    return Container();
+    return Container(
+      width: duSetWidth(295),
+      margin: EdgeInsets.only(bottom: duSetHeight(40)),
+      child: Column(
+        children: <Widget>[
+          // title
+          Text(
+            "Or sign in with social networks",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.primaryText,
+              fontFamily: "Avenir",
+              fontWeight: FontWeight.w400,
+              fontSize: duSetFontSize(16),
+            ),
+          ),
+          // 按钮
+          Padding(
+            padding: EdgeInsets.only(top: duSetHeight(20)),
+            child: Row(
+              children: <Widget>[
+                btnFlatButtonBorderOnlyWidget(
+                  onPressed: () {},
+                  width: 88,
+                  iconFileName: "twitter",
+                ),
+                Spacer(),
+                btnFlatButtonBorderOnlyWidget(
+                  onPressed: () {},
+                  width: 88,
+                  iconFileName: "google",
+                ),
+                Spacer(),
+                btnFlatButtonBorderOnlyWidget(
+                  onPressed: () {},
+                  width: 88,
+                  iconFileName: "facebook",
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
+  // 注册按钮
   Widget _buildSignupButton() {
-    return Container();
+    return Container(
+      margin: EdgeInsets.only(bottom: duSetHeight(20)),
+      child: btnFlatButtonWidget(
+        onPressed: _handleNavSignUp,
+        width: 294,
+        gbColor: AppColors.secondaryElement,
+        fontColor: AppColors.primaryText,
+        title: "Sign up",
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
+      ),
+    );
   }
 
   @override
