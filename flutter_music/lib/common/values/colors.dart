@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+// 主次，控件的分类
 class AppColors {
   /// 主背景 白色
   static const Color primaryBackground = Color.fromARGB(255, 255, 255, 255);

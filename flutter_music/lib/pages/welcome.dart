@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_music/common/utils/radii.dart';
 import 'package:flutter_music/common/utils/utils.dart';
+import 'package:flutter_music/common/values/values.dart';
 
 class WelcomePage extends StatelessWidget {
   @override
