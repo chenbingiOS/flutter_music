@@ -30,9 +30,18 @@ dependencies:
 
   # 屏幕适配
   flutter_screenutil: ^5.0.0
-  # # toast
+  # toast
   fluttertoast: ^8.0.7
-  
+  # http
+  dio: ^3.0.10
+  # 维持上下文的cookie
+  cookie_jar: ^1.0.1
+  dio_cookie_manager: ^1.0.0  
+  # 本地缓存
+  localstorage: ^3.0.6+9
+  #  SHA 加密
+  crypto: ^3.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
