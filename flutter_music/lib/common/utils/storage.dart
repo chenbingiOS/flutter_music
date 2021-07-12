@@ -1,5 +1,5 @@
-import 'package:flutter_music/common/values/values.dart';
-import 'package:localstorage/localstorage.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// 本地存储
 /// 单例 StorageUtil().getItem('key')
@@ -7,22 +7,26 @@ class StorageUtil {
   static final StorageUtil _singleton = new StorageUtil._internal();
   factory StorageUtil() => _singleton;
 
-  LocalStorage get storage => _storage;
-  late LocalStorage _storage;
+  SharedPreferences get prefs => _prefs;
+  static late SharedPreferences _prefs;
 
   StorageUtil._internal() {
     init();
   }
 
-  init() {
-    _storage = new LocalStorage(STORAGE_MASTER_KEY);
+  static Future init() async {
+    _prefs = await SharedPreferences.getInstance();
   }
 
-  String getItem(String key) {
-    return _storage.getItem(key);
+  /// 设置 json 对象
+  Future<bool> setJSON(String key, dynamic jsonVal) {
+    String jsonString = jsonEncode(jsonVal);
+    return prefs.setString(key, jsonString);
   }
 
-  Future<void> setItem(String key, String val) async {
-    await _storage.setItem(key, val);
+  /// 获取 json 对象
+  dynamic getJSON(String key) {
+    String? jsonString = prefs.getString(key);
+    return jsonString == null ? null : jsonDecode(jsonString);
   }
 }
