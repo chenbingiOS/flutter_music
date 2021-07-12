@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music/common/apis/apis.dart';
+import 'package:flutter_music/common/entitys/entity.dart';
 import 'package:flutter_music/common/utils/utils.dart';
 import 'package:flutter_music/common/values/values.dart';
 import 'package:flutter_music/common/widgets/widgets.dart';
+import 'package:flutter_music/global.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -87,15 +90,23 @@ class _SignInPageState extends State<SignInPage> {
   final _passController = TextEditingController();
 
   // 跳转 注册界面
-  void _handleSignIn() {
-    if (!duIsEmail(_emailController.value.text)) {
-      toastInfo(msg: '请正确输入邮件');
-      return;
-    }
-    if (!duCheckStringLength(_passController.value.text, 6)) {
-      toastInfo(msg: '密码不能小于6位');
-      return;
-    }
+  Future<void> _handleSignIn() async {
+    // if (!duIsEmail(_emailController.value.text)) {
+    //   toastInfo(msg: '请正确输入邮件');
+    //   return;
+    // }
+    // if (!duCheckStringLength(_passController.value.text, 6)) {
+    //   toastInfo(msg: '密码不能小于6位');
+    //   return;
+    // }
+
+    UserLoginRequestEntity params = UserLoginRequestEntity(
+      email: _emailController.value.text,
+      password: duSHA256(_passController.value.text),
+    );
+
+    UserLoginResponseEntity userProfile = await UserAPI.login(params: params);
+    Global.saveProfile(userProfile);
   }
 
   // 执行登录操作
