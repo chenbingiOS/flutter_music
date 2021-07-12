@@ -18,7 +18,9 @@ class HttpUtil {
   static final HttpUtil _instance = HttpUtil._internal();
   factory HttpUtil() => _instance;
 
-  Dio dio;
+  Dio get dio => _dio;
+  late Dio _dio;
+
   CancelToken cancelToken = new CancelToken();
 
   HttpUtil._internal() {
@@ -53,27 +55,34 @@ class HttpUtil {
       responseType: ResponseType.json,
     );
 
-    dio = new Dio(options);
+    _dio = new Dio(options);
 
     // Cookie管理
     CookieJar cookieJar = CookieJar();
-    dio.interceptors.add(CookieManager(cookieJar));
+    _dio.interceptors.add(CookieManager(cookieJar));
 
     // 添加拦截器
-    dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
-      // print("请求之前");
-      // Loading.before(options.uri, '正在通讯...');
-      return options; //continue
-    }, onResponse: (Response response) {
-      // print("响应之前");
-      // Loading.complete(response.request.uri);
-      return response; // continue
-    }, onError: (DioError e) {
-      // print("错误之前");
-      // Loading.complete(e.request.uri);
-      return e; //continue
-    }));
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest:
+            (RequestOptions options, RequestInterceptorHandler handler) async {
+          print("请求之前");
+          // Loading.before(options.uri, '正在通讯...');
+          handler.next(options);
+        },
+        onResponse:
+            (Response response, ResponseInterceptorHandler handler) async {
+          print("响应之前");
+          // Loading.complete(response.request.uri);
+          handler.next(response);
+        },
+        onError: (DioError e, ErrorInterceptorHandler handler) {
+          print("错误之前");
+          // Loading.complete(e.request.uri);
+          handler.next(e);
+        },
+      ),
+    );
   }
 
   /*
@@ -82,30 +91,26 @@ class HttpUtil {
   // 错误信息
   ErrorEntity createErrorEntity(DioError error) {
     switch (error.type) {
-      case DioErrorType.CANCEL:
+      case DioErrorType.cancel:
         {
           return ErrorEntity(code: -1, message: "请求取消");
         }
-        break;
-      case DioErrorType.CONNECT_TIMEOUT:
+      case DioErrorType.connectTimeout:
         {
           return ErrorEntity(code: -1, message: "连接超时");
         }
-        break;
-      case DioErrorType.SEND_TIMEOUT:
+      case DioErrorType.sendTimeout:
         {
           return ErrorEntity(code: -1, message: "请求超时");
         }
-        break;
-      case DioErrorType.RECEIVE_TIMEOUT:
+      case DioErrorType.receiveTimeout:
         {
           return ErrorEntity(code: -1, message: "响应超时");
         }
-        break;
-      case DioErrorType.RESPONSE:
+      case DioErrorType.response:
         {
           try {
-            int errCode = error.response.statusCode;
+            int? errCode = error.response!.statusCode;
             // String errMsg = error.response.statusMessage;
             // return ErrorEntity(code: errCode, message: errMsg);
             switch (errCode) {
@@ -113,59 +118,49 @@ class HttpUtil {
                 {
                   return ErrorEntity(code: errCode, message: "请求语法错误");
                 }
-                break;
               case 401:
                 {
                   return ErrorEntity(code: errCode, message: "没有权限");
                 }
-                break;
               case 403:
                 {
                   return ErrorEntity(code: errCode, message: "服务器拒绝执行");
                 }
-                break;
               case 404:
                 {
                   return ErrorEntity(code: errCode, message: "无法连接服务器");
                 }
-                break;
               case 405:
                 {
                   return ErrorEntity(code: errCode, message: "请求方法被禁止");
                 }
-                break;
               case 500:
                 {
                   return ErrorEntity(code: errCode, message: "服务器内部错误");
                 }
-                break;
               case 502:
                 {
                   return ErrorEntity(code: errCode, message: "无效的请求");
                 }
-                break;
               case 503:
                 {
                   return ErrorEntity(code: errCode, message: "服务器挂了");
                 }
-                break;
               case 505:
                 {
                   return ErrorEntity(code: errCode, message: "不支持HTTP协议请求");
                 }
-                break;
               default:
                 {
                   // return ErrorEntity(code: errCode, message: "未知错误");
                   return ErrorEntity(
-                      code: errCode, message: error.response.statusMessage);
+                      code: errCode, message: error.response!.statusMessage);
                 }
             }
           } on Exception catch (_) {
             return ErrorEntity(code: -1, message: "未知错误");
           }
         }
-        break;
       default:
         {
           return ErrorEntity(code: -1, message: error.message);
@@ -187,11 +182,9 @@ class HttpUtil {
   Options getLocalOptions() {
     Options options = Options();
     String token = StorageUtil().getItem(STORAGE_USER_TOKEN_KEY);
-    if (token != null) {
-      options = Options(headers: {
-        'Authorization': 'Bearer $token',
-      });
-    }
+    options = Options(headers: {
+      'Authorization': 'Bearer $token',
+    });
     return options;
   }
 

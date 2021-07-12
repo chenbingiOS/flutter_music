@@ -17,12 +17,14 @@ Widget btnFlatButtonWidget({
   return Container(
     width: duSetWidth(width),
     height: duSetHeight(height),
-    child: FlatButton(
-      onPressed: onPressed,
-      color: gbColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: Radii.k6pxRadius,
+    child: TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: gbColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: Radii.k6pxRadius,
+        ),
       ),
+      onPressed: onPressed,
       child: Text(
         title,
         textAlign: TextAlign.center,
@@ -85,12 +87,14 @@ Widget btnFlatButtonBorderOnlyWidget({
   return Container(
     width: duSetWidth(width),
     height: duSetHeight(height),
-    child: FlatButton(
-      onPressed: onPressed,
-      shape: RoundedRectangleBorder(
-        side: Borders.primaryBorder,
-        borderRadius: Radii.k6pxRadius,
+    child: TextButton(
+      style: TextButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          side: Borders.primaryBorder,
+          borderRadius: Radii.k6pxRadius,
+        ),
       ),
+      onPressed: onPressed,
       child: Image.asset(
         "assets/images/icons-$iconFileName.png",
       ),

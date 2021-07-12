@@ -29,16 +29,16 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # 屏幕适配
-  flutter_screenutil: ^5.0.0
+  flutter_screenutil: ^5.0.0+2
   # toast
   fluttertoast: ^8.0.7
   # http
-  dio: ^3.0.10
+  dio: ^4.0.0
   # 维持上下文的cookie
-  cookie_jar: ^1.0.1
-  dio_cookie_manager: ^1.0.0  
+  cookie_jar: ^3.0.1
+  dio_cookie_manager: ^2.0.0  
   # 本地缓存
-  localstorage: ^3.0.6+9
+  localstorage: ^4.0.0+1
   #  SHA 加密
   crypto: ^3.0.1
 

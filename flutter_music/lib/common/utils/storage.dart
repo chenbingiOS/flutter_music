@@ -5,11 +5,10 @@ import 'package:localstorage/localstorage.dart';
 /// 单例 StorageUtil().getItem('key')
 class StorageUtil {
   static final StorageUtil _singleton = new StorageUtil._internal();
-  LocalStorage _storage;
+  factory StorageUtil() => _singleton;
 
-  factory StorageUtil() {
-    return _singleton;
-  }
+  LocalStorage get storage => _storage;
+  late LocalStorage _storage;
 
   StorageUtil._internal() {
     _storage = new LocalStorage(STORAGE_MASTER_KEY);
