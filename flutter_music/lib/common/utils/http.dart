@@ -24,6 +24,10 @@ class HttpUtil {
   CancelToken cancelToken = new CancelToken();
 
   HttpUtil._internal() {
+    init();
+  }
+
+  init() {
     // BaseOptions、Options、RequestOptions 都可以配置参数，优先级别依次递增，且可以根据优先级别覆盖参数
     BaseOptions options = new BaseOptions(
       // 请求基地址,可以包含子路径
@@ -76,7 +80,7 @@ class HttpUtil {
           // Loading.complete(response.request.uri);
           handler.next(response);
         },
-        onError: (DioError e, ErrorInterceptorHandler handler) {
+        onError: (DioError e, ErrorInterceptorHandler handler) async {
           print("错误之前");
           // Loading.complete(e.request.uri);
           handler.next(e);

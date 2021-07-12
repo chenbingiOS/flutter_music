@@ -11,6 +11,10 @@ class StorageUtil {
   late LocalStorage _storage;
 
   StorageUtil._internal() {
+    init();
+  }
+
+  init() {
     _storage = new LocalStorage(STORAGE_MASTER_KEY);
   }
 
