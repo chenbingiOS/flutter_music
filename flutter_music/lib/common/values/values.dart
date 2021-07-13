@@ -7,3 +7,5 @@ export 'shadows.dart';
 export 'fonts.dart';
 export 'server.dart';
 export 'storages.dart';
+export 'cache.dart';
+export 'proxy.dart';
