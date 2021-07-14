@@ -1,4 +1,4 @@
-import 'package:flutter_music/common/entitys/entity.dart';
+import 'package:flutter_music/common/entitys/entitys.dart';
 import 'package:flutter_music/common/utils/utils.dart';
 
 class UserAPI {

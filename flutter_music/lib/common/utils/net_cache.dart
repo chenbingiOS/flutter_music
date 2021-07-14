@@ -23,7 +23,7 @@ class NetCache extends Interceptor {
   var cache = LinkedHashMap<String, CacheObject>();
 
   @override
-  onRequest(
+  void onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
@@ -60,10 +60,12 @@ class NetCache extends Interceptor {
         }
       }
     }
+    // 无缓存，走下一步请求
+    return handler.next(options);
   }
 
   @override
-  onError(
+  void onError(
     DioError err,
     ErrorInterceptorHandler handler,
   ) async {
@@ -72,7 +74,7 @@ class NetCache extends Interceptor {
   }
 
   @override
-  onResponse(
+  void onResponse(
     Response response,
     ResponseInterceptorHandler handler,
   ) async {

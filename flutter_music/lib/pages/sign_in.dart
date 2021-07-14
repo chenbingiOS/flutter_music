@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_music/common/apis/apis.dart';
-import 'package:flutter_music/common/entitys/entity.dart';
+import 'package:flutter_music/common/apis/news.dart';
+import 'package:flutter_music/common/entitys/entitys.dart';
 import 'package:flutter_music/common/utils/utils.dart';
 import 'package:flutter_music/common/values/values.dart';
 import 'package:flutter_music/common/widgets/widgets.dart';
-import 'package:flutter_music/global.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -63,7 +62,7 @@ class _SignInPageState extends State<SignInPage> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.primaryText,
-                fontFamily: "Montserrat",
+                fontFamily: AppFonts.montserrat,
                 fontWeight: FontWeight.w600,
                 fontSize: duSetFontSize(24),
                 height: 1,
@@ -75,7 +74,7 @@ class _SignInPageState extends State<SignInPage> {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppColors.primaryText,
-              fontFamily: "Avenir",
+              fontFamily: AppFonts.avenir,
               fontWeight: FontWeight.w400,
               fontSize: duSetFontSize(16),
               height: 1,
@@ -100,13 +99,16 @@ class _SignInPageState extends State<SignInPage> {
     //   return;
     // }
 
-    UserLoginRequestEntity params = UserLoginRequestEntity(
-      email: _emailController.value.text,
-      password: duSHA256(_passController.value.text),
-    );
+    // UserLoginRequestEntity params = UserLoginRequestEntity(
+    //   email: _emailController.value.text,
+    //   password: duSHA256(_passController.value.text),
+    // );
 
-    UserLoginResponseEntity userProfile = await UserAPI.login(params: params);
-    Global.saveProfile(userProfile);
+    // UserLoginResponseEntity userProfile = await UserAPI.login(params: params);
+    // Global.saveProfile(userProfile);
+
+    List<CategoryResponseEntity> _categories = await NewsAPI.categories();
+    print(_categories);
   }
 
   // 执行登录操作
