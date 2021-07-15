@@ -32,7 +32,7 @@ class HttpUtil {
 
   init() {
     // BaseOptions、Options、RequestOptions 都可以配置参数，优先级别依次递增，且可以根据优先级别覆盖参数
-    BaseOptions options = new BaseOptions(
+    BaseOptions options = BaseOptions(
       // 请求基地址,可以包含子路径
       baseUrl: SERVER_API_URL,
 
@@ -62,7 +62,7 @@ class HttpUtil {
       responseType: ResponseType.json,
     );
 
-    _dio = new Dio(options);
+    _dio = Dio(options);
 
     // Cookie管理
     CookieJar cookieJar = CookieJar();
