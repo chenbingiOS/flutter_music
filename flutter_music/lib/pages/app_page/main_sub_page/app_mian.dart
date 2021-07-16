@@ -13,13 +13,12 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // late NewsPageListResponseEntity _newsPageList; // 新闻翻页
-  // late NewsRecommendResponseEntity _newsRecommend; // 新闻推荐
-  // List<CategoryResponseEntity> get categories => _categories; // 分类
-  // late List<CategoryResponseEntity> _categories; // 分类
-  // late List<ChannelResponseEntity> _channels; // 频道
+  late NewsPageListResponseEntity _newsPageList; // 新闻翻页
+  late NewsRecommendResponseEntity _newsRecommend; // 新闻推荐
+  late List<CategoryResponseEntity> _categories; // 分类
+  late List<ChannelResponseEntity> _channels; // 频道
 
-  String? _selCategoryCode; // 选中的分类Code
+  late String _selCategoryCode; // 选中的分类Code
 
   @override
   void initState() {
@@ -29,83 +28,30 @@ class _MainPageState extends State<MainPage> {
 
   // 读取所有数据
   _loadAllData() async {
-    List<CategoryResponseEntity> _categoriesdd = await NewsAPI.categories();
-    print(_categoriesdd);
-    // _channels = await NewsAPI.channels();
-    // _newsRecommend = await NewsAPI.newsRecommend();
-    // _newsPageList = await NewsAPI.newsPageList();
+    _categories = await NewsAPI.categories();
+    _channels = await NewsAPI.channels();
+    _newsRecommend = await NewsAPI.newsRecommend();
+    _newsPageList = await NewsAPI.newsPageList();
 
-    // _selCategoryCode = _categories.first.code;
+    _selCategoryCode = _categories.first.code;
 
-    // if (mounted) {
-    //   setState(() {});
-    // }
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   // 分类菜单
-  // Widget _buildCategories() {
-  //   return SingleChildScrollView(
-  //     scrollDirection: Axis.horizontal,
-  //     child: Row(
-  //       children: categories.map<Widget>((item) {
-  //         return Container(
-  //           padding: EdgeInsets.symmetric(horizontal: 8),
-  //           child: GestureDetector(
-  //             child: Text(
-  //               item.title,
-  //               style: TextStyle(
-  //                 color: _selCategoryCode == item.code
-  //                     ? AppColors.secondaryElementText
-  //                     : AppColors.primaryText,
-  //                 fontSize: duSetFontSize(18),
-  //                 fontFamily: 'Montserrat',
-  //                 fontWeight: FontWeight.w600,
-  //               ),
-  //             ),
-  //             onTap: () {
-  //               setState(() {
-  //                 _selCategoryCode = item.code;
-  //               });
-  //             },
-  //           ),
-  //         );
-  //       }).toList(),
-  //     ),
-  //   );
-  // }
-  // 抽取前先实现业务
-  // Widget _buildCategories() {
-  //   return _categories == null
-  //       ? Container()
-  //       : SingleChildScrollView(
-  //           scrollDirection: Axis.horizontal,
-  //           child: Row(
-  //             children: _categories.map<Widget>((item) {
-  //               return Container(
-  //                 padding: EdgeInsets.symmetric(horizontal: 8),
-  //                 child: GestureDetector(
-  //                   child: Text(
-  //                     item.title,
-  //                     style: TextStyle(
-  //                       color: _selCategoryCode == item.code
-  //                           ? AppColors.secondaryElementText
-  //                           : AppColors.primaryText,
-  //                       fontSize: duSetFontSize(18),
-  //                       fontFamily: 'Montserrat',
-  //                       fontWeight: FontWeight.w600,
-  //                     ),
-  //                   ),
-  //                   onTap: () {
-  //                     setState(() {
-  //                       _selCategoryCode = item.code;
-  //                     });
-  //                   },
-  //                 ),
-  //               );
-  //             }).toList(),
-  //           ),
-  //         );
-  // }
+  Widget _buildCategories() {
+    return newsCategoriesWidget(
+      categories: _categories,
+      selCategoryCode: _selCategoryCode,
+      onTap: (CategoryResponseEntity item) {
+        setState(() {
+          _selCategoryCode = item.code;
+        });
+      },
+    );
+  }
 
   // 推荐阅读
   Widget _buildRecommend() {
@@ -145,7 +91,7 @@ class _MainPageState extends State<MainPage> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          // _buildCategories(),
+          _buildCategories(),
           _buildRecommend(),
           _buildChannels(),
           _buildNewsList(),
