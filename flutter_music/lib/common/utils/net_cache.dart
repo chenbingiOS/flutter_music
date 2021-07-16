@@ -55,6 +55,7 @@ class NetCache extends Interceptor {
         if ((DateTime.now().millisecondsSinceEpoch - ob.timeStamp) / 1000 <
             CACHE_MAXAGE) {
           handler.resolve(cache[key]!.response);
+          return;
         } else {
           //若已过期则删除缓存，继续向服务器请求
           cache.remove(key);
