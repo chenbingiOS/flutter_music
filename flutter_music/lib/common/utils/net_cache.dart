@@ -39,9 +39,10 @@ class NetCache extends Interceptor {
         cache.removeWhere((key, v) => key.contains(options.path));
       } else {
         // 如果不是列表，则只删除uri相同的缓存
-        delete(options.uri.toString());
+        cache.remove(options.uri.toString());
       }
       handler.next(options);
+      return;
     }
 
     // get 请求，开启缓存
@@ -65,43 +66,34 @@ class NetCache extends Interceptor {
   }
 
   @override
-  void onError(
-    DioError err,
-    ErrorInterceptorHandler handler,
-  ) async {
-    // 错误状态不缓存，走下一步
-    handler.next(err);
-  }
-
-  @override
   void onResponse(
     Response response,
     ResponseInterceptorHandler handler,
   ) async {
     // 如果启用缓存，将返回结果保存到缓存
     if (CACHE_ENABLE) {
-      _saveCache(response);
+      RequestOptions options = response.requestOptions;
+      // 只缓存 get 的请求
+      if (options.extra["noCache"] != true &&
+          options.method.toLowerCase() == "get") {
+        // 如果缓存数量超过最大数量限制，则先移除最早的一条记录
+        if (cache.length == CACHE_MAXCOUNT) {
+          cache.remove(cache[cache.keys.first]);
+        }
+        String key = options.extra["cacheKey"] ?? options.uri.toString();
+        cache[key] = CacheObject(response);
+      }
     }
     // 走下一步
     handler.next(response);
   }
 
-  _saveCache(Response object) {
-    RequestOptions options = object.requestOptions;
-
-    // 只缓存 get 的请求
-    if (options.extra["noCache"] != true &&
-        options.method.toLowerCase() == "get") {
-      // 如果缓存数量超过最大数量限制，则先移除最早的一条记录
-      if (cache.length == CACHE_MAXCOUNT) {
-        cache.remove(cache[cache.keys.first]);
-      }
-      String key = options.extra["cacheKey"] ?? options.uri.toString();
-      cache[key] = CacheObject(object);
-    }
-  }
-
-  void delete(String key) {
-    cache.remove(key);
+  @override
+  void onError(
+    DioError err,
+    ErrorInterceptorHandler handler,
+  ) async {
+    // 错误状态不缓存，走下一步
+    handler.next(err);
   }
 }
