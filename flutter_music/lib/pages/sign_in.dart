@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music/common/apis/apis.dart';
-import 'package:flutter_music/common/apis/news.dart';
 import 'package:flutter_music/common/entitys/entitys.dart';
 import 'package:flutter_music/common/utils/utils.dart';
 import 'package:flutter_music/common/values/values.dart';

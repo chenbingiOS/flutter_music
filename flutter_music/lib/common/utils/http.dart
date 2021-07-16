@@ -73,7 +73,8 @@ class HttpUtil {
       InterceptorsWrapper(
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
-          print('[拦截器请求信息]\n$options\n');
+          print(
+              '[拦截器请求信息] Url:\n${options.baseUrl}${options.path}\n${options.queryParameters}\n');
           handler.next(options);
         },
         onResponse:

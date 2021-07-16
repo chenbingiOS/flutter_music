@@ -5,14 +5,14 @@ import 'package:flutter_music/common/utils/utils.dart';
 class NewsAPI {
   /// 翻页
   static Future<NewsPageListResponseEntity> newsPageList(
-      {required NewsPageListRequestEntity params}) async {
+      {NewsPageListRequestEntity? params}) async {
     var response = await HttpUtil().get('/news', params: params);
     return NewsPageListResponseEntity.fromJson(response);
   }
 
   /// 推荐
   static Future<NewsRecommendResponseEntity> newsRecommend(
-      {required NewsRecommendRequestEntity params}) async {
+      {NewsRecommendRequestEntity? params}) async {
     var response = await HttpUtil().get('/news/recommend', params: params);
     return NewsRecommendResponseEntity.fromJson(response);
   }
@@ -37,7 +37,7 @@ class NewsAPI {
 
   /// 标签列表
   static Future<List<TagResponseEntity>> tags(
-      {required TagRequestEntity params}) async {
+      {TagRequestEntity? params}) async {
     var response = await HttpUtil().get('/tags', params: params);
     return response
         .map<TagResponseEntity>((item) => TagResponseEntity.fromJson(item))

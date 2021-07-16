@@ -1,4 +1,4 @@
-import 'package:flutter_music/pages/application.dart';
+import 'package:flutter_music/pages/app_page/application.dart';
 import 'package:flutter_music/pages/sign_in.dart';
 import 'package:flutter_music/pages/sign_up.dart';
 

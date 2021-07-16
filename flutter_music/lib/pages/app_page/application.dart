@@ -3,6 +3,7 @@ import 'package:flutter_music/common/utils/iconfont.dart';
 import 'package:flutter_music/common/utils/screen.dart';
 import 'package:flutter_music/common/values/values.dart';
 import 'package:flutter_music/common/widgets/app.dart';
+import 'package:flutter_music/pages/app_page/main_sub_page/app_mian.dart';
 
 class ApplicationPage extends StatefulWidget {
   ApplicationPage({Key? key}) : super(key: key);
@@ -84,10 +85,7 @@ class _ApplicationPageState extends State<ApplicationPage>
     return PageView(
       physics: NeverScrollableScrollPhysics(),
       children: [
-        Container(
-          // height: 200,
-          color: Colors.red,
-        ),
+        MainPage(),
         Container(
           color: Colors.yellow,
         ),

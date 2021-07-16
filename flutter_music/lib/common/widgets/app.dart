@@ -13,7 +13,8 @@ AppBar transparentAppBar({
     elevation: 0,
     title: title,
     leading: leading == null
-        ? IconButton(
+        ? null
+        : IconButton(
             icon: Icon(
               Icons.arrow_back,
               color: AppColors.primaryText,
@@ -21,8 +22,7 @@ AppBar transparentAppBar({
             onPressed: () {
               Navigator.pop(context);
             },
-          )
-        : Container(),
+          ),
     actions: actions,
   );
 }

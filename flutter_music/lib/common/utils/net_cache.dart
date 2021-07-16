@@ -41,7 +41,7 @@ class NetCache extends Interceptor {
         // 如果不是列表，则只删除uri相同的缓存
         delete(options.uri.toString());
       }
-      return handler.next(options);
+      handler.next(options);
     }
 
     // get 请求，开启缓存
@@ -53,7 +53,7 @@ class NetCache extends Interceptor {
         //若缓存未过期，则返回缓存内容
         if ((DateTime.now().millisecondsSinceEpoch - ob.timeStamp) / 1000 <
             CACHE_MAXAGE) {
-          return handler.resolve(cache[key]!.response);
+          handler.resolve(cache[key]!.response);
         } else {
           //若已过期则删除缓存，继续向服务器请求
           cache.remove(key);
@@ -61,7 +61,7 @@ class NetCache extends Interceptor {
       }
     }
     // 无缓存，走下一步请求
-    return handler.next(options);
+    handler.next(options);
   }
 
   @override
@@ -69,8 +69,8 @@ class NetCache extends Interceptor {
     DioError err,
     ErrorInterceptorHandler handler,
   ) async {
+    // 错误状态不缓存，走下一步
     handler.next(err);
-    // 错误状态不缓存
   }
 
   @override
@@ -82,6 +82,8 @@ class NetCache extends Interceptor {
     if (CACHE_ENABLE) {
       _saveCache(response);
     }
+    // 走下一步
+    handler.next(response);
   }
 
   _saveCache(Response object) {
