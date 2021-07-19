@@ -41,9 +41,13 @@ dependencies:
   # key:value 存储方式
   # localstorage: ^4.0.0+1
   #  JSON存储方式
-  shared_preferences: ^2.0.6
+  shared_preferences: ^2.0.6  
   #  SHA 加密
   crypto: ^3.0.1
+  # 图片缓存
+  cached_network_image: ^3.1.0
+  # 日期格式
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

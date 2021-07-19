@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_music/common/apis/apis.dart';
 import 'package:flutter_music/common/entitys/entitys.dart';
 import 'package:flutter_music/common/utils/utils.dart';
-import 'package:flutter_music/common/values/values.dart';
 import 'package:flutter_music/pages/app_page/main_sub_page/categories_widget.dart';
+import 'package:flutter_music/pages/app_page/main_sub_page/channels_widget.dart';
+import 'package:flutter_music/pages/app_page/main_sub_page/news_item_widget.dart';
+import 'package:flutter_music/pages/app_page/main_sub_page/newsletter_widget.dart';
+import 'package:flutter_music/pages/app_page/main_sub_page/recommend_widget.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -55,35 +58,39 @@ class _MainPageState extends State<MainPage> {
 
   // 推荐阅读
   Widget _buildRecommend() {
-    return Container(
-      height: duSetHeight(490),
-      color: Colors.amber,
-    );
+    return recommendWidget(_newsRecommend);
   }
 
   // 频道
   Widget _buildChannels() {
-    return Container(
-      height: duSetHeight(137),
-      color: Colors.blueAccent,
+    return newsChannelsWidget(
+      channels: _channels,
+      onTap: (ChannelResponseEntity entity) {},
     );
   }
 
   // 新闻列表
   Widget _buildNewsList() {
-    return Container(
-      height: duSetHeight(161 * 5 + 100.0),
-      color: Colors.purple,
+    return Column(
+      children: _newsPageList.items.map(
+        (item) {
+          return Column(
+            children: [
+              newsItem(item),
+              Divider(
+                height: 1,
+              )
+            ],
+          );
+        },
+      ).toList(),
     );
   }
 
   // ad 广告条
   // 邮件订阅
   Widget _buildEmailSubscribe() {
-    return Container(
-      height: duSetHeight(259),
-      color: Colors.brown,
-    );
+    return newsletterWidget();
   }
 
   @override
