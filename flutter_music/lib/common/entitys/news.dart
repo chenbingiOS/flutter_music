@@ -1,16 +1,23 @@
 /// 新闻分页 request
 class NewsPageListRequestEntity {
   String categoryCode;
-  String channelCode;
-  String tag;
-  String keyword;
+  String? channelCode;
+  String? tag;
+  String? keyword;
 
   NewsPageListRequestEntity({
     required this.categoryCode,
-    required this.channelCode,
-    required this.tag,
-    required this.keyword,
+    this.channelCode,
+    this.tag,
+    this.keyword,
   });
+
+  Map<String, dynamic> toJson() => {
+        "categoryCode": categoryCode,
+        "channelCode": channelCode,
+        "tag": tag,
+        "keyword": keyword,
+      };
 }
 
 /// 新闻分页 response
@@ -91,16 +98,23 @@ class NewsItem {
 /// 新闻推荐 request
 class NewsRecommendRequestEntity {
   String categoryCode;
-  String channelCode;
-  String tag;
-  String keyword;
+  String? channelCode;
+  String? tag;
+  String? keyword;
 
   NewsRecommendRequestEntity({
     required this.categoryCode,
-    required this.channelCode,
-    required this.tag,
-    required this.keyword,
+    this.channelCode,
+    this.tag,
+    this.keyword,
   });
+
+  Map<String, dynamic> toJson() => {
+        "categoryCode": categoryCode,
+        "channelCode": channelCode,
+        "tag": tag,
+        "keyword": keyword,
+      };
 }
 
 /// 新闻推荐 response

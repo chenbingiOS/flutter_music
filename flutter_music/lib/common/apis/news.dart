@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_music/common/entitys/entitys.dart';
 import 'package:flutter_music/common/utils/utils.dart';
 
@@ -6,9 +5,8 @@ import 'package:flutter_music/common/utils/utils.dart';
 class NewsAPI {
   /// 翻页
   static Future<NewsPageListResponseEntity> newsPageList({
-    required BuildContext context,
-    bool cacheDisek = false,
     NewsPageListRequestEntity? params,
+    bool cacheDisk = false,
     bool refresh = false,
   }) async {
     var response = await HttpUtil().get('/news', params: params);
@@ -17,19 +15,21 @@ class NewsAPI {
 
   /// 推荐
   static Future<NewsRecommendResponseEntity> newsRecommend({
-    required BuildContext context,
-    bool cacheDisek = false,
     NewsRecommendRequestEntity? params,
+    bool cacheDisk = false,
     bool refresh = false,
   }) async {
-    var response = await HttpUtil().get('/news/recommend', params: params);
+    var response = await HttpUtil().get(
+      '/news/recommend',
+      params: params?.toJson(),
+      refresh: refresh,
+    );
     return NewsRecommendResponseEntity.fromJson(response);
   }
 
   /// 分类
   static Future<List<CategoryResponseEntity>> categories({
-    required BuildContext context,
-    bool cacheDisek = false,
+    bool cacheDisk = false,
   }) async {
     var response = await HttpUtil().get('/categories');
     return response
@@ -40,8 +40,7 @@ class NewsAPI {
 
   /// 频道
   static Future<List<ChannelResponseEntity>> channels({
-    required BuildContext context,
-    bool cacheDisek = false,
+    bool cacheDisk = false,
   }) async {
     var response = await HttpUtil().get('/channels');
     return response
@@ -52,8 +51,7 @@ class NewsAPI {
 
   /// 标签列表
   static Future<List<TagResponseEntity>> tags({
-    required BuildContext context,
-    bool cacheDisek = false,
+    bool cacheDisk = false,
     TagRequestEntity? params,
   }) async {
     var response = await HttpUtil().get('/tags', params: params);

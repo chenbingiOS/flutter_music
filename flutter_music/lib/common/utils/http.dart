@@ -222,6 +222,7 @@ class HttpUtil {
     bool noCache = !CACHE_ENABLE,
     bool list = false,
     String? cacheKey,
+    bool cacheDisk = false,
   }) async {
     try {
       Options requestOptions = options ?? Options();
@@ -230,6 +231,7 @@ class HttpUtil {
         "noCache": noCache,
         "list": list,
         "cacheKey": cacheKey,
+        "cacheDisk": cacheDisk,
       });
       Map<String, dynamic> _authorization = getAuthorizationHeader();
       requestOptions = requestOptions.copyWith(headers: _authorization);

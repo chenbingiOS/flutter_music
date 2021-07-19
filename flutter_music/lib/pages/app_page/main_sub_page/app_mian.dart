@@ -23,11 +23,9 @@ class _MainPageState extends State<MainPage> {
   late EasyRefreshController? _controller; // EasyRefresh控制器
 
   late Future<List<CategoryResponseEntity>> _categories; // 分类
-
+  late Future<List<ChannelResponseEntity>> _channels; // 频道
   late Future<NewsPageListResponseEntity> _newsPageList; // 新闻翻页
   late Future<NewsRecommendResponseEntity> _newsRecommend; // 新闻推荐
-
-  late Future<List<ChannelResponseEntity>> _channels; // 频道
 
   late String _selCategoryCode; // 选中的分类Code
 
@@ -53,16 +51,35 @@ class _MainPageState extends State<MainPage> {
 
   // 读取所有数据
   _loadAllData() {
-    _categories = NewsAPI.categories(context: context);
-    // _channels = await NewsAPI.channels(context: context);
-    // _newsRecommend = await NewsAPI.newsRecommend(context: context);
-    // _newsPageList = await NewsAPI.newsPageList(context: context);
+    _categories = NewsAPI.categories();
+    _channels = NewsAPI.channels();
+    _newsRecommend = NewsAPI.newsRecommend();
+    _newsPageList = NewsAPI.newsPageList();
+  }
 
-    // _selCategoryCode = _categories!.first.code;
+  _loadNewsData(
+    categoryCode, {
+    bool refresh = false,
+  }) async {
+    _selCategoryCode = categoryCode;
+    _newsRecommend = NewsAPI.newsRecommend(
+      cacheDisk: true,
+      refresh: refresh,
+      params: NewsRecommendRequestEntity(
+        categoryCode: categoryCode,
+      ),
+    );
+    _newsPageList = NewsAPI.newsPageList(
+      cacheDisk: true,
+      refresh: refresh,
+      params: NewsPageListRequestEntity(
+        categoryCode: categoryCode,
+      ),
+    );
 
-    // if (mounted) {
-    //   setState(() {});
-    // }
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   // 分类菜单
@@ -91,42 +108,63 @@ class _MainPageState extends State<MainPage> {
 
   // 推荐阅读
   Widget _buildRecommend() {
-    return Container();
-    // return _newsRecommend == null
-    //     ? Container()
-    //     : recommendWidget(_newsRecommend!);
+    return FutureBuilder<NewsRecommendResponseEntity>(
+      future: _newsRecommend,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return recommendWidget(snapshot.data!);
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        return Container();
+      },
+    );
   }
 
   // 频道
   Widget _buildChannels() {
-    return Container();
-    // return _channels == null
-    //     ? Container()
-    //     : newsChannelsWidget(
-    //         channels: _channels!,
-    //         onTap: (ChannelResponseEntity entity) {},
-    //       );
+    return FutureBuilder<List<ChannelResponseEntity>>(
+      future: _channels,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return newsChannelsWidget(
+            channels: snapshot.data!,
+            onTap: (ChannelResponseEntity item) {},
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        return Container();
+      },
+    );
   }
 
   // 新闻列表
   Widget _buildNewsList() {
-    return Container();
-    // return _newsPageList == null
-    //     ? Container()
-    //     : Column(
-    //         children: _newsPageList!.items.map(
-    //           (item) {
-    //             return Column(
-    //               children: [
-    //                 newsItem(item),
-    //                 Divider(
-    //                   height: 1,
-    //                 )
-    //               ],
-    //             );
-    //           },
-    //         ).toList(),
-    //       );
+    return FutureBuilder<NewsPageListResponseEntity>(
+      future: _newsPageList,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            children: snapshot.data!.items.map(
+              (item) {
+                return Column(
+                  children: [
+                    newsItem(item),
+                    Divider(
+                      height: 1,
+                    ),
+                  ],
+                );
+              },
+            ).toList(),
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        return Container();
+      },
+    );
   }
 
   // ad 广告条
@@ -137,16 +175,26 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          _buildCategoriesTest(),
-          _buildCategories(),
-          _buildRecommend(),
-          _buildChannels(),
-          _buildNewsList(),
-          _buildEmailSubscribe(),
-        ],
+    return EasyRefresh(
+      enableControlFinishLoad: true,
+      controller: _controller,
+      header: ClassicalHeader(),
+      onRefresh: () async {
+        _loadNewsData(
+          _selCategoryCode,
+          refresh: true,
+        );
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            _buildCategories(),
+            _buildRecommend(),
+            _buildChannels(),
+            _buildNewsList(),
+            _buildEmailSubscribe(),
+          ],
+        ),
       ),
     );
   }

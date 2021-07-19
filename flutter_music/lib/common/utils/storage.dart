@@ -29,4 +29,9 @@ class StorageUtil {
     String? jsonString = prefs.getString(key);
     return jsonString == null ? null : jsonDecode(jsonString);
   }
+
+  /// 删除 json 对象
+  Future<bool> remove(String key) {
+    return _prefs.remove(key);
+  }
 }
