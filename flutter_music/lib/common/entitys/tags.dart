@@ -13,6 +13,14 @@ class TagRequestEntity {
     required this.keyword,
     required this.newsID,
   });
+
+  Map<String, dynamic> toJson() => {
+        "categoryCode": categoryCode,
+        "channelCode": channelCode,
+        "tag": tag,
+        "keyword": keyword,
+        "newsID": newsID,
+      };
 }
 
 /// 标签列表 Response

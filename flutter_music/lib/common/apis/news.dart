@@ -9,7 +9,12 @@ class NewsAPI {
     bool cacheDisk = false,
     bool refresh = false,
   }) async {
-    var response = await HttpUtil().get('/news', params: params);
+    var response = await HttpUtil().get(
+      '/news',
+      params: params?.toJson(),
+      refresh: refresh,
+      cacheDisk: cacheDisk,
+    );
     return NewsPageListResponseEntity.fromJson(response);
   }
 
@@ -31,7 +36,10 @@ class NewsAPI {
   static Future<List<CategoryResponseEntity>> categories({
     bool cacheDisk = false,
   }) async {
-    var response = await HttpUtil().get('/categories');
+    var response = await HttpUtil().get(
+      '/categories',
+      cacheDisk: cacheDisk,
+    );
     return response
         .map<CategoryResponseEntity>(
             (item) => CategoryResponseEntity.fromJson(item))
@@ -42,7 +50,10 @@ class NewsAPI {
   static Future<List<ChannelResponseEntity>> channels({
     bool cacheDisk = false,
   }) async {
-    var response = await HttpUtil().get('/channels');
+    var response = await HttpUtil().get(
+      '/channels',
+      cacheDisk: cacheDisk,
+    );
     return response
         .map<ChannelResponseEntity>(
             (item) => ChannelResponseEntity.fromJson(item))
@@ -54,7 +65,11 @@ class NewsAPI {
     bool cacheDisk = false,
     TagRequestEntity? params,
   }) async {
-    var response = await HttpUtil().get('/tags', params: params);
+    var response = await HttpUtil().get(
+      '/tags',
+      params: params?.toJson(),
+      cacheDisk: cacheDisk,
+    );
     return response
         .map<TagResponseEntity>((item) => TagResponseEntity.fromJson(item))
         .toList();
