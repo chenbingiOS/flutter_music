@@ -6,6 +6,7 @@ import 'package:flutter_music/common/apis/apis.dart';
 import 'package:flutter_music/common/entitys/entitys.dart';
 import 'package:flutter_music/common/utils/utils.dart';
 import 'package:flutter_music/common/values/values.dart';
+import 'package:flutter_music/pages/app_page/main_sub_page/ad_widget.dart';
 import 'package:flutter_music/pages/app_page/main_sub_page/categories_widget.dart';
 import 'package:flutter_music/pages/app_page/main_sub_page/channels_widget.dart';
 import 'package:flutter_music/pages/app_page/main_sub_page/news_item_widget.dart';
@@ -148,13 +149,22 @@ class _MainPageState extends State<MainPage> {
           return Column(
             children: snapshot.data!.items.map(
               (item) {
+                // 新闻行
+                List<Widget> widgets = <Widget>[
+                  newsItem(item),
+                  Divider(height: 1),
+                ];
+
+                int index = snapshot.data!.items.indexOf(item);
+                if (((index + 1) % 5) == 0) {
+                  widgets.addAll(<Widget>[
+                    adWidget(),
+                    Divider(height: 1),
+                  ]);
+                }
+
                 return Column(
-                  children: [
-                    newsItem(item),
-                    Divider(
-                      height: 1,
-                    ),
-                  ],
+                  children: widgets,
                 );
               },
             ).toList(),
@@ -189,9 +199,13 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           children: <Widget>[
             _buildCategories(),
+            Divider(height: 1),
             _buildRecommend(),
+            Divider(height: 1),
             _buildChannels(),
+            Divider(height: 1),
             _buildNewsList(),
+            Divider(height: 1),
             _buildEmailSubscribe(),
           ],
         ),
