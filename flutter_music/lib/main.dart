@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music/common/provider/app_provider.dart';
 import 'package:flutter_music/global.dart';
-import 'package:flutter_music/pages/welcome.dart';
+import 'package:flutter_music/pages/index.dart';
 import 'package:flutter_music/routes.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
-void main(List<String> args) => Global.init().then((value) => runApp(MyApp()));
+void main() => Global.init().then(
+      (e) => runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<AppState>.value(
+              value: Global.appState,
+            ),
+          ],
+          child: Consumer<AppState>(
+            builder: (context, appState, _) {
+              if (appState.isGrayFilter) {
+                return ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.color,
+                  ),
+                  child: MyApp(),
+                );
+              } else {
+                return MyApp();
+              }
+            },
+          ),
+        ),
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: Size(375, 812 - 44 - 34),
-      builder: () => MaterialApp(
-        title: 'Material App',
-        home: WelcomePage(),
-        routes: staticRoutes,
-      ),
+    return MaterialApp(
+      title: 'ducafecat.tech',
+      home: IndexPage(),
+      routes: staticRoutes,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

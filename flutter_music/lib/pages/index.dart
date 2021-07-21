@@ -22,7 +22,6 @@ class _IndexPageState extends State<IndexPage> {
             maxHeight: MediaQuery.of(context).size.height),
         designSize: Size(375, 812 - 44 - 34),
         orientation: Orientation.portrait);
-    ScreenUtil.init(BoxConstraints());
 
     return Scaffold(
       body: Global.isFirstOpen == true

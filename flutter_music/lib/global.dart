@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_music/common/entitys/entitys.dart';
-import 'package:flutter_music/common/provider/provider.dart';
+import 'package:flutter_music/common/provider/app_provider.dart';
 import 'package:flutter_music/common/utils/http.dart';
 import 'package:flutter_music/common/utils/utils.dart';
 import 'package:flutter_music/common/values/values.dart';

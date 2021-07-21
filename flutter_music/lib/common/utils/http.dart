@@ -6,6 +6,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_music/common/utils/utils.dart';
 import 'package:flutter_music/common/values/values.dart';
+import 'package:flutter_music/common/widgets/widgets.dart';
 import 'package:flutter_music/global.dart';
 
 /*
@@ -84,6 +85,21 @@ class HttpUtil {
         },
         onError: (DioError e, ErrorInterceptorHandler handler) async {
           print('[拦截器错误信息]\n$e\n');
+          print(
+              'Url:\n${e.requestOptions.baseUrl}${e.requestOptions.path}\n${e.requestOptions.queryParameters}\n');
+          // 错误提示
+          ErrorEntity eInfo = createErrorEntity(e);
+          toastInfo(msg: eInfo.message);
+          // 错误交互处理
+          var context = e.requestOptions.extra["context"];
+          if (context != null) {
+            switch (eInfo.code) {
+              case 401: // 没有权限 重新登录
+                goLoginPage(context);
+                break;
+              default:
+            }
+          }
           handler.next(e);
         },
       ),
@@ -225,77 +241,113 @@ class HttpUtil {
     String? cacheKey,
     bool cacheDisk = false,
   }) async {
-    try {
-      Options requestOptions = options ?? Options();
-      requestOptions = requestOptions.copyWith(extra: {
-        "refresh": refresh,
-        "noCache": noCache,
-        "list": list,
-        "cacheKey": cacheKey,
-        "cacheDisk": cacheDisk,
-      });
-      Map<String, dynamic> _authorization = getAuthorizationHeader();
-      requestOptions = requestOptions.copyWith(headers: _authorization);
+    Options requestOptions = options ?? Options();
+    requestOptions = requestOptions.copyWith(extra: {
+      "refresh": refresh,
+      "noCache": noCache,
+      "list": list,
+      "cacheKey": cacheKey,
+      "cacheDisk": cacheDisk,
+    });
+    Map<String, dynamic> _authorization = getAuthorizationHeader();
+    requestOptions = requestOptions.copyWith(headers: _authorization);
 
-      var response = await dio.get(path,
-          queryParameters: params,
-          options: requestOptions,
-          cancelToken: cancelToken);
-      return response.data;
-    } on DioError catch (e) {
-      throw createErrorEntity(e);
-    }
+    var response = await dio.get(
+      path,
+      queryParameters: params,
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
+    return response.data;
   }
 
   /// restful post 操作
-  Future post(String path, {dynamic params, Options? options}) async {
+  Future post(
+    String path, {
+    dynamic params,
+    Options? options,
+  }) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic> _authorization = getAuthorizationHeader();
     requestOptions = requestOptions.copyWith(headers: _authorization);
-    var response = await dio.post(path,
-        data: params, options: requestOptions, cancelToken: cancelToken);
+    var response = await dio.post(
+      path,
+      data: params,
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
     return response.data;
   }
 
   /// restful put 操作
-  Future put(String path, {dynamic params, Options? options}) async {
+  Future put(
+    String path, {
+    dynamic params,
+    Options? options,
+  }) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic> _authorization = getAuthorizationHeader();
     requestOptions = requestOptions.copyWith(headers: _authorization);
-    var response = await dio.put(path,
-        data: params, options: requestOptions, cancelToken: cancelToken);
+    var response = await dio.put(
+      path,
+      data: params,
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
     return response.data;
   }
 
   /// restful patch 操作
-  Future patch(String path, {dynamic params, Options? options}) async {
+  Future patch(
+    String path, {
+    dynamic params,
+    Options? options,
+  }) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic> _authorization = getAuthorizationHeader();
     requestOptions = requestOptions.copyWith(headers: _authorization);
-    var response = await dio.patch(path,
-        data: params, options: requestOptions, cancelToken: cancelToken);
+    var response = await dio.patch(
+      path,
+      data: params,
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
     return response.data;
   }
 
   /// restful delete 操作
-  Future delete(String path, {dynamic params, Options? options}) async {
+  Future delete(
+    String path, {
+    dynamic params,
+    Options? options,
+  }) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic> _authorization = getAuthorizationHeader();
     requestOptions = requestOptions.copyWith(headers: _authorization);
-    var response = await dio.delete(path,
-        data: params, options: requestOptions, cancelToken: cancelToken);
+    var response = await dio.delete(
+      path,
+      data: params,
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
     return response.data;
   }
 
   /// restful post form 表单提交操作
-  Future postForm(String path, {dynamic params, Options? options}) async {
+  Future postForm(
+    String path, {
+    dynamic params,
+    Options? options,
+  }) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic> _authorization = getAuthorizationHeader();
     requestOptions = requestOptions.copyWith(headers: _authorization);
-    var response = await dio.post(path,
-        data: FormData.fromMap(params),
-        options: requestOptions,
-        cancelToken: cancelToken);
+    var response = await dio.post(
+      path,
+      data: FormData.fromMap(params),
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
     return response.data;
   }
 }
@@ -304,7 +356,11 @@ class HttpUtil {
 class ErrorEntity implements Exception {
   int code;
   String message;
-  ErrorEntity({required this.code, required this.message});
+
+  ErrorEntity({
+    required this.code,
+    required this.message,
+  });
 
   String toString() {
     return "Exception: code $code, $message";

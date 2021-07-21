@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_music/common/provider/provider.dart';
+import 'package:flutter_music/common/provider/app_provider.dart';
 import 'package:flutter_music/common/utils/utils.dart';
 import 'package:flutter_music/global.dart';
 import 'package:provider/provider.dart';
