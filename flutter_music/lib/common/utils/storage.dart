@@ -30,6 +30,15 @@ class StorageUtil {
     return jsonString == null ? null : jsonDecode(jsonString);
   }
 
+  Future<bool> setBool(String key, bool val) {
+    return _prefs.setBool(key, val);
+  }
+
+  bool getBool(String key) {
+    bool? val = _prefs.getBool(key);
+    return val == null ? false : val;
+  }
+
   /// 删除 json 对象
   Future<bool> remove(String key) {
     return _prefs.remove(key);

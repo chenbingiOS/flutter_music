@@ -50,6 +50,8 @@ dependencies:
   intl: ^0.17.0
   # 下拉刷新
   flutter_easyrefresh: ^2.2.1
+  # 状态管理
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

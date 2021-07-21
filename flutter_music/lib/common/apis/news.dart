@@ -1,5 +1,6 @@
 import 'package:flutter_music/common/entitys/entitys.dart';
 import 'package:flutter_music/common/utils/utils.dart';
+import 'package:flutter_music/common/values/values.dart';
 
 /// 新闻
 class NewsAPI {
@@ -14,6 +15,7 @@ class NewsAPI {
       params: params?.toJson(),
       refresh: refresh,
       cacheDisk: cacheDisk,
+      cacheKey: STORAGE_INDEX_NEWS_CACHE_KEY,
     );
     return NewsPageListResponseEntity.fromJson(response);
   }

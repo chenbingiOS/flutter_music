@@ -7,3 +7,4 @@ export 'storage.dart';
 export 'security.dart';
 export 'net_cache.dart';
 export 'date.dart';
+export 'authentication.dart';
